@@ -1,0 +1,28 @@
+server:
+  port: 8999
+  servlet:
+    session:
+      cookie:
+        name: UISESSION
+
+
+
+oauth2-server: http://localhost:9999/oauth
+
+security:
+  oauth2:
+    client:
+
+      client-id: client1
+      client-secret: secret
+      access-token-uri: ${oauth2-server}/token
+      user-authorization-uri: ${oauth2-server}/authorize
+
+    resource:
+      token-info-uri: ${oauth2-server}/check_token
+      user-info-uri: ${oauth2-server}/me
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG

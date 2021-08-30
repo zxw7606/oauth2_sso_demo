@@ -31,3 +31,5 @@ http://localhost:9999/logout?redirect_uri=http://localhost:xxxx/logout
 
 ```
  把数据库的token删掉
+ 
+[SpringSecurity的过滤链是如何工作的](https://editor.csdn.net/md/?articleId=119991773)

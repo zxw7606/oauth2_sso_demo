@@ -102,7 +102,7 @@ public class ServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore())
-//                .authenticationManager(new OAuth2AuthenticationManager())
+//                .authenticationManager(new OAuth2AuthenticationManager()) 配置的话就多了一个 ResourceOwnerPasswordTokenGranter , 其实就是生成的Token策略不一样了， 这里单点登录默认为authorization_code模式
                 .userDetailsService(userDetailsService) //查看用户的地方
                 .authorizationCodeServices(authorizationCodeServices()) // 储存code
 //                .tokenServices(tokenServices())

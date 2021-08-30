@@ -102,7 +102,7 @@ public class ServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.tokenStore(tokenStore())
-                .authenticationManager(new OAuth2AuthenticationManager())
+//                .authenticationManager(new OAuth2AuthenticationManager())
                 .userDetailsService(userDetailsService) //查看用户的地方
                 .authorizationCodeServices(authorizationCodeServices()) // 储存code
 //                .tokenServices(tokenServices())

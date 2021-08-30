@@ -12,23 +12,13 @@ oauth_sso_client2
 
 ### 项目构建
 
-**数据库**
-
-导入oauth_sso_server\src\main\resources\data.sql
-
-
 ### 测试步骤
 1 .
 ```http request
 http://localhost:8998/dflkfsd
 ```
 
-2 .
-用户名 aa 密码 aa
 
-3 .
-```http request
-http://localhost:8999/dflkfsd
 ```
 默认直接登录
 

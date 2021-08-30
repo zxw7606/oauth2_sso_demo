@@ -10,3 +10,7 @@ spring:
     show-sql: true
 server:
   port: 9999
+
+logging:
+  level:
+    org.springframework.security: DEBUG

@@ -1,12 +1,9 @@
 package com.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -15,13 +12,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-
-import javax.sql.DataSource;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 
 @Configuration
@@ -46,17 +41,29 @@ public class ServerConfig extends AuthorizationServerConfigurerAdapter {
     }
 
 
-    /**
-     * 配置client的储存信息 JdbcClientDetailsService
-     */
-
-    @Autowired
-    private DataSource dataSource;
+//    /**
+//     * 配置client的储存信息 JdbcClientDetailsService
+//     */
+//
+//    @Autowired
+//    private DataSource dataSource;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        //配置数据源
-        clients.jdbc(dataSource);
+        clients.inMemory().withClient("ben1")// client_id
+                .secret("123456")// client_secret
+                .authorizedGrantTypes("authorization_code", "refresh_token")// 该client允许的授权类型
+                .scopes("all")// 允许的授权范围
+                .autoApprove(false)
+                //加上验证回调地址
+                .redirectUris("http://localhost:8999/login")
+                .and()
+                .withClient("ben2")
+                .secret("123456")
+                .authorizedGrantTypes("authorization_code", "refresh_token")
+                .scopes("all")
+                .autoApprove(false)
+                .redirectUris("http://localhost:8998/login");
     }
 
 
@@ -77,14 +84,12 @@ public class ServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Bean
     public AuthorizationCodeServices authorizationCodeServices() {
-        JdbcAuthorizationCodeServices codeServices = new JdbcAuthorizationCodeServices(dataSource);
-        return codeServices;
+        return new InMemoryAuthorizationCodeServices();
     }
 
     @Bean
     public TokenStore tokenStore() {
-        JdbcTokenStore tokenStore = new JdbcTokenStore(dataSource);
-        return tokenStore;
+        return new InMemoryTokenStore();
     }
 
     @Bean
@@ -104,4 +109,6 @@ public class ServerConfig extends AuthorizationServerConfigurerAdapter {
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
 
     }
+
+
 }

@@ -13,8 +13,8 @@ security:
   oauth2:
     client:
 
-      client-id: client2
-      client-secret: secret
+      client-id: ben2
+      client-secret: 123456
       access-token-uri: ${oauth2-server}/token
       user-authorization-uri: ${oauth2-server}/authorize
     #      auto-approve-scopes: false
